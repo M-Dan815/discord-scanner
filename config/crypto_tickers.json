@@ -1,0 +1,51 @@
+{
+  "holdings": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "watchlist": [
+    "ADA",
+    "DOGE",
+    "AVAX",
+    "XLM",
+    "XRP",
+    "SUI"
+  ],
+  "all": [
+    "TRUMP",
+    "WLFI",
+    "KTA",
+    "COMP",
+    "BCH",
+    "MAMO",
+    "PUMP",
+    "VET",
+    "XTZ",
+    "PEPE",
+    "DOT",
+    "ARB",
+    "SHIB",
+    "APT",
+    "FLR",
+    "ZEC",
+    "BABY",
+    "USDT",
+    "USDC",
+    "ENA",
+    "AKT",
+    "CAKE",
+    "AXL",
+    "NEAR",
+    "LINK",
+    "CETUS",
+    "OSMO",
+    "PLUME",
+    "RAY",
+    "MEGA",
+    "UNI",
+    "AAVE",
+    "XCN",
+    "HNT"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "notify_sections": ["holdings", "watchlist", "all"],
+  "notify_timeframes": ["1D", "1W", "1M", "4H"],
+  "email_mode": "batch",
+  "batch_interval_minutes": 15,
+  "email_from": "eaib2b@gmail.com",
+  "email_to": "jn.shantnu@gmail.com",
+  "email_subject_prefix": "[SignalScanner]"
+}

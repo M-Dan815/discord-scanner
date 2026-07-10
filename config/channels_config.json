@@ -1,0 +1,67 @@
+{
+  "channels": [
+    {
+      "name": "daily-gold-dot",
+      "url": "https://discord.com/channels/925093363479375883/1354520445830959345",
+      "enabled": true,
+      "timeframe": "1D",
+      "signal_type": "GOLDEN"
+    },
+    {
+      "name": "monthly-alert-green",
+      "url": "https://discord.com/channels/925093363479375883/1392563645837217933",
+      "enabled": true,
+      "timeframe": "1M",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "weekly-alert-green",
+      "url": "https://discord.com/channels/925093363479375883/1392575134551904276",
+      "enabled": true,
+      "timeframe": "1W",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "daily-alert-green",
+      "url": "https://discord.com/channels/925093363479375883/1350534278735335475",
+      "enabled": true,
+      "timeframe": "1D",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "4-hour-alert-green",
+      "url": "https://discord.com/channels/925093363479375883/1392220093814931526",
+      "enabled": true,
+      "timeframe": "4H",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "4-hour-alert-red",
+      "url": "https://discord.com/channels/925093363479375883/1394374272100860067",
+      "enabled": true,
+      "timeframe": "4H",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "daily-alert-red",
+      "url": "https://discord.com/channels/925093363479375883/1392560642187333793",
+      "enabled": true,
+      "timeframe": "1D",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "weekly-alert-red",
+      "url": "https://discord.com/channels/925093363479375883/1354524218267533413",
+      "enabled": true,
+      "timeframe": "1W",
+      "signal_type": "AUTO"
+    },
+    {
+      "name": "monthly-alert-red",
+      "url": "https://discord.com/channels/925093363479375883/1354523582524293140",
+      "enabled": true,
+      "timeframe": "1M",
+      "signal_type": "AUTO"
+    }
+  ]
+}
