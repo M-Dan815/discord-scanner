@@ -8,6 +8,10 @@ Supports two run modes:
   - "continuous": Poll continuously at configured interval (default)
 
 Set RUN_MODE=once in .env for cron usage.
+
+Scan interval is controlled by scan_interval_minutes in
+config/notification_prefs.json — edit that file to change frequency.
+No code changes needed.
 """
 
 import logging
@@ -190,7 +194,6 @@ def main():
     discord_email    = os.getenv("DISCORD_EMAIL", "")
     discord_password = os.getenv("DISCORD_PASSWORD", "")
     user_data_dir    = os.getenv("PLAYWRIGHT_USER_DATA_DIR", "./browser_profile")
-    poll_interval    = int(os.getenv("POLL_INTERVAL_SECONDS", "60"))
     run_mode         = os.getenv("RUN_MODE", "continuous")
 
     if not gmail_address or not gmail_password:
@@ -211,6 +214,13 @@ def main():
     logger.info("Notify sections:   %s", prefs["notify_sections"])
     logger.info("Notify timeframes: %s", prefs["notify_timeframes"])
     logger.info("Email mode:        %s", prefs["email_mode"])
+
+    # --- Scan interval from config file (not from .env) ---
+    # Edit scan_interval_minutes in config/notification_prefs.json to change.
+    # Default: 120 minutes (2 hours). Takes effect on the next cycle automatically.
+    scan_interval_minutes = int(prefs.get("scan_interval_minutes", 120))
+    scan_interval_seconds = scan_interval_minutes * 60
+    logger.info("Scan interval:     %d minutes", scan_interval_minutes)
 
     # --- Resolve sender / recipient addresses ---
     sender_addr    = prefs.get("email_from", gmail_address)
@@ -277,18 +287,21 @@ def main():
                 logger.info("Cycle complete. Messages processed: %d.", processed)
             except Exception as e:
                 logger.error("Error in polling cycle: %s", e, exc_info=True)
-            
+
             # Final flush
             remaining = notifier.pending_count()
             if remaining:
                 logger.info("Flushing %d pending signal(s)...", remaining)
                 notifier.flush()
-            
+
             logger.info("Single cycle complete. Exiting.")
-        
+
         else:
-            # Continuous mode (original behavior)
-            logger.info("=== Continuous mode (polling every %ds) ===", poll_interval)
+            # Continuous mode — interval driven by notification_prefs.json
+            logger.info(
+                "=== Continuous mode (interval: %d minutes) ===",
+                scan_interval_minutes,
+            )
             cycle = 0
             ticker_reload_every = 10
 
@@ -301,10 +314,13 @@ def main():
                     logger.info("Reloading ticker files from disk...")
                     ticker_store.reload()
 
-                # Reload channels + prefs each cycle
+                # Reload channels + prefs each cycle (picks up live edits)
                 try:
                     channels = load_channels()
                     prefs    = load_notification_prefs()
+                    # Re-read interval in case user edited the file
+                    scan_interval_minutes = int(prefs.get("scan_interval_minutes", 120))
+                    scan_interval_seconds = scan_interval_minutes * 60
                 except Exception as e:
                     logger.warning(
                         "Config reload error: %s — using cached config.", e
@@ -325,8 +341,14 @@ def main():
                 if _shutdown_requested:
                     break
 
-                logger.info("Sleeping %ds until next cycle...", poll_interval)
-                for _ in range(poll_interval):
+                logger.info(
+                    "Next scan in %d minutes. "
+                    "Edit scan_interval_minutes in notification_prefs.json to change.",
+                    scan_interval_minutes,
+                )
+
+                # Sleep in 1s increments so Ctrl+C / SIGTERM responds instantly
+                for _ in range(scan_interval_seconds):
                     if _shutdown_requested:
                         break
                     time.sleep(1)
